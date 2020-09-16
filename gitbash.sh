@@ -2,7 +2,7 @@
 
 # receive argument
 NEWBRANCHNAME=$1
-NEWBRANCHONLYNAME=$2
+NEWBRANCHONLYFLAG=$2
 REMOTENAME=$3
 
 # get current git branch
@@ -35,10 +35,7 @@ pushnewbranchonly() {
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
-        echo -e "\n--Create new branch named $NEWBRANCHONLYNAME\n" &&
-        git checkout -b $NEWBRANCHONLYNAME &&
-        echo -e "\n--Push & upstream new branch $NEWBRANCHONLYNAME to Github $REMOTENAME\n" &&
-        git push -u origin $NEWBRANCHONLYNAME
+        createnewbranchsetupstream
     echo -e "\nDone!"
     return 1
 }
@@ -68,10 +65,10 @@ deletecurrentbranch() {
 
 # create new branch and set upstream
 createnewbranchsetupstream() {
-    echo -e "\n--Create new branch named $NEWBRANCHONLYNAME\n" &&
-        git checkout -b $NEWBRANCHONLYNAME &&
-        echo -e "\n--Push & upstream new branch $NEWBRANCHONLYNAME to Github $REMOTENAME\n" &&
-        git push -u origin $NEWBRANCHONLYNAME
+    echo -e "\n--Create new branch named $NEWBRANCHNAME\n" &&
+        git checkout -b $NEWBRANCHNAME &&
+        echo -e "\n--Push & upstream new branch $NEWBRANCHNAME to Github $REMOTENAME\n" &&
+        git push -u origin $NEWBRANCHNAME
     return 1
 }
 
@@ -80,7 +77,7 @@ if [ "$NEWBRANCHNAME" = "$CURRENTBRANCH" ]; then
     exit 1
 elif [ "$NEWBRANCHNAME" = "dev" ]; then
     pushcheckoutdelete
-elif [ "$NEWBRANCHNAME" = "-newonly" ]; then
+elif [ "$NEWBRANCHONLYFLAG" = "-newonly" ]; then
     pushnewbranchonly
 else
     all
