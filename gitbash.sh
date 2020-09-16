@@ -1,28 +1,73 @@
 #!/bin/bash
 
 # receive argument
-ARG=$1
-echo $ARG
+NEWBRANCHNAME=$1
+NEWBRANCHONLYNAME=$2
+REMOTENAME=$3
 
 # get current git branch
 CURRENTBRANCH=$(git branch --show-current 2>&1)
-echo $CURRENTBRANCH
 
-pushandcheckout() {
-    echo "this is push checkout"
-    git push && git checkout dev && aaa && git branch -D $CURRENTBRANCH
+# set default value for $REMOTENAME
+if [ "$REMOTENAME" = "" ]; then
+    REMOTENAME="origin"
+fi
+
+# push, checkout to dev and delete current branch only
+pushcheckoutdelete() {
+    echo -e "\n--Push current branch\n" &&
+        git push &&
+        echo -e "\n--Checkout dev\n" &&
+        git checkout dev &&
+        echo -e "\n--Pull dev\n" &&
+        git pull &&
+        echo -e "\n--Delete branch $CURRENTBRANCH\n" &&
+        git branch -D $CURRENTBRANCH &&
+        echo -e "\nDone!"
     return 1
 }
 
-pushandnewbranch() {
-    echo "this is push new branch"
+# push, checkout to dev and create new branch only
+pushnewbranchonly() {
+    echo -e "\n--Push current branch\n" &&
+        git push &&
+        echo -e "\n--Checkout dev\n" &&
+        git checkout dev &&
+        echo -e "\n--Pull dev\n" &&
+        git pull &&
+        echo -e "\n--Create new branch named $NEWBRANCHONLYNAME\n" &&
+        git checkout -b $NEWBRANCHONLYNAME &&
+        echo -e "\n--Push & upstream new branch $NEWBRANCHONLYNAME to Github $REMOTENAME\n" &&
+        git push -u origin $NEWBRANCHONLYNAME &&
+        echo -e "\nDone!"
+    return 1
 }
 
-if [ "$ARG" = "$CURRENTBRANCH" ]; then
-    echo "You already on $ARG branch"
+# push, checkout to dev, pull, delete current branch, create new branch and set upstream
+all() {
+    echo -e "\n--Push current branch\n" &&
+        git push &&
+        echo -e "\n--Checkout dev\n" &&
+        git checkout dev &&
+        echo -e "\n--Pull dev\n" &&
+        git pull &&
+        echo -e "\n--Delete branch $CURRENTBRANCH\n" &&
+        git branch -D $CURRENTBRANCH &&
+        echo -e "\n--Create new branch named $NEWBRANCHNAME\n" &&
+        git checkout -b $NEWBRANCHNAME &&
+        echo -e "\n--Push & upstream new branch $NEWBRANCHNAME to Github $REMOTENAME\n" &&
+        git push -u origin $NEWBRANCHNAME &&
+        echo -e "\nDone!"
+    return 1
+}
+
+if [ "$NEWBRANCHNAME" = "$CURRENTBRANCH" ]; then
+    echo "You already on $NEWBRANCHNAME branch"
     exit 1
-elif [ "$ARG" = "dev" ]; then
-    pushandcheckout
+elif [ "$NEWBRANCHNAME" = "dev" ] || [ "$NEWBRANCHNAME" = "" ]; then
+    pushcheckoutdelete
+elif [ "$NEWBRANCHNAME" = "-newonly" ]; then
+    pushnewbranchonly
 else
-    pushandnewbranch
+    all
 fi
