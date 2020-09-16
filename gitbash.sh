@@ -8,6 +8,10 @@ REMOTENAME=$3
 # get current git branch
 CURRENTBRANCH=$(git branch --show-current 2>&1)
 
+# set default value for $NEWBRANCHNAME
+if [ "$NEWBRANCHNAME" = "" ]; then
+    NEWBRANCHNAME="dev"
+
 # set default value for $REMOTENAME
 if [ "$REMOTENAME" = "" ]; then
     REMOTENAME="origin"
@@ -64,7 +68,7 @@ all() {
 if [ "$NEWBRANCHNAME" = "$CURRENTBRANCH" ]; then
     echo "You already on $NEWBRANCHNAME branch"
     exit 1
-elif [ "$NEWBRANCHNAME" = "dev" ] || [ "$NEWBRANCHNAME" = "" ]; then
+elif [ "$NEWBRANCHNAME" = "dev" ]; then
     pushcheckoutdelete
 elif [ "$NEWBRANCHNAME" = "-newonly" ]; then
     pushnewbranchonly
