@@ -24,8 +24,7 @@ pushcheckoutdelete() {
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
-        echo -e "\n--Delete branch $CURRENTBRANCH\n" &&
-        git branch -D $CURRENTBRANCH &&
+        deletecurrentbranch &&
         echo -e "\nDone!"
     return 1
 }
@@ -50,13 +49,29 @@ all() {
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
-        echo -e "\n--Delete branch $CURRENTBRANCH\n" &&
-        git branch -D $CURRENTBRANCH &&
-        echo -e "\n--Create new branch named $NEWBRANCHNAME\n" &&
-        git checkout -b $NEWBRANCHNAME &&
-        echo -e "\n--Push & upstream new branch $NEWBRANCHNAME to Github $REMOTENAME\n" &&
-        git push -u origin $NEWBRANCHNAME &&
-        echo -e "\nDone!"
+        if [ "$CURRENTBRANCH" = "dev" ]; then
+            createnewbranchsetupstream
+        else
+            deletecurrentbranch &&
+                createnewbranchsetupstream
+        fi
+    echo -e "\nDone!"
+    return 1
+}
+
+# delete current branch
+deletecurrentbranch() {
+    echo -e "\n--Delete branch $CURRENTBRANCH\n" &&
+        git branch -D $CURRENTBRANCH
+    return 1
+}
+
+# create new branch and set upstream
+createnewbranchsetupstream() {
+    echo -e "\n--Create new branch named $NEWBRANCHONLYNAME\n" &&
+        git checkout -b $NEWBRANCHONLYNAME &&
+        echo -e "\n--Push & upstream new branch $NEWBRANCHONLYNAME to Github $REMOTENAME\n" &&
+        git push -u origin $NEWBRANCHONLYNAME
     return 1
 }
 
