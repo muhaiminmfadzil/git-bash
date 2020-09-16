@@ -78,7 +78,7 @@ createnewbranchsetupstream() {
     echo -e "\n--Create new branch named $NEWBRANCHNAME\n" &&
         git checkout -b $NEWBRANCHNAME &&
         echo -e "\n--Push & upstream new branch $NEWBRANCHNAME to Github $REMOTENAME\n" &&
-        git push -u origin $NEWBRANCHNAME
+        git push -u $REMOTENAME $NEWBRANCHNAME
     return 0
 }
 
@@ -125,8 +125,8 @@ fi
 
 # run
 if [ "$NEWBRANCHNAME" = "$CURRENTBRANCH" ]; then
-    echo "You already on $NEWBRANCHNAME branch"
-    exit 0
+    echo "ERROR : You already on $NEWBRANCHNAME branch"
+    exit 1
 elif [ "$NEWBRANCHNAME" = "dev" ]; then
     runcheckoutdelete
 elif [ "$NEWBRANCHONLY" = true ]; then
