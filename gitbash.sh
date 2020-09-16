@@ -18,11 +18,9 @@ if [ "$REMOTENAME" = "" ]; then
     REMOTENAME="origin"
 fi
 
-# push, checkout to dev and delete current branch only
+# checkout to dev and delete current branch only
 pushcheckoutdelete() {
-    echo -e "\n--Push current branch\n" &&
-        git push &&
-        echo -e "\n--Checkout dev\n" &&
+    echo -e "\n--Checkout dev\n" &&
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
@@ -32,11 +30,9 @@ pushcheckoutdelete() {
     return 1
 }
 
-# push, checkout to dev and create new branch only
+# checkout to dev and create new branch only
 pushnewbranchonly() {
-    echo -e "\n--Push current branch\n" &&
-        git push &&
-        echo -e "\n--Checkout dev\n" &&
+    echo -e "\n--Checkout dev\n" &&
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
@@ -48,11 +44,9 @@ pushnewbranchonly() {
     return 1
 }
 
-# push, checkout to dev, pull, delete current branch, create new branch and set upstream
+# checkout to dev, pull, delete current branch, create new branch and set upstream
 all() {
-    echo -e "\n--Push current branch\n" &&
-        git push &&
-        echo -e "\n--Checkout dev\n" &&
+    echo -e "\n--Checkout dev\n" &&
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
