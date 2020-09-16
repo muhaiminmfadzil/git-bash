@@ -8,16 +8,19 @@ REMOTENAME=$3
 # get current git branch
 CURRENTBRANCH=$(git branch --show-current 2>&1)
 
+# set default value for $NEWBRANCHNAME
+if [ "$NEWBRANCHNAME" = "" ]; then
+    NEWBRANCHNAME="dev"
+fi
+
 # set default value for $REMOTENAME
 if [ "$REMOTENAME" = "" ]; then
     REMOTENAME="origin"
 fi
 
-# push, checkout to dev and delete current branch only
+# checkout to dev and delete current branch only
 pushcheckoutdelete() {
-    echo -e "\n--Push current branch\n" &&
-        git push &&
-        echo -e "\n--Checkout dev\n" &&
+    echo -e "\n--Checkout dev\n" &&
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
@@ -27,11 +30,9 @@ pushcheckoutdelete() {
     return 1
 }
 
-# push, checkout to dev and create new branch only
+# checkout to dev and create new branch only
 pushnewbranchonly() {
-    echo -e "\n--Push current branch\n" &&
-        git push &&
-        echo -e "\n--Checkout dev\n" &&
+    echo -e "\n--Checkout dev\n" &&
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
@@ -43,11 +44,9 @@ pushnewbranchonly() {
     return 1
 }
 
-# push, checkout to dev, pull, delete current branch, create new branch and set upstream
+# checkout to dev, pull, delete current branch, create new branch and set upstream
 all() {
-    echo -e "\n--Push current branch\n" &&
-        git push &&
-        echo -e "\n--Checkout dev\n" &&
+    echo -e "\n--Checkout dev\n" &&
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
@@ -64,7 +63,7 @@ all() {
 if [ "$NEWBRANCHNAME" = "$CURRENTBRANCH" ]; then
     echo "You already on $NEWBRANCHNAME branch"
     exit 1
-elif [ "$NEWBRANCHNAME" = "dev" ] || [ "$NEWBRANCHNAME" = "" ]; then
+elif [ "$NEWBRANCHNAME" = "dev" ]; then
     pushcheckoutdelete
 elif [ "$NEWBRANCHNAME" = "-newonly" ]; then
     pushnewbranchonly
