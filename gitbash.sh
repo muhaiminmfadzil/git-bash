@@ -11,6 +11,7 @@ CURRENTBRANCH=$(git branch --show-current 2>&1)
 # set default value for $NEWBRANCHNAME
 if [ "$NEWBRANCHNAME" = "" ]; then
     NEWBRANCHNAME="dev"
+fi
 
 # set default value for $REMOTENAME
 if [ "$REMOTENAME" = "" ]; then
