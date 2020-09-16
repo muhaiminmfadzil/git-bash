@@ -70,6 +70,12 @@ next)
     done
     shift $((OPTIND - 1))
     ;;
+*)
+    echo "ERROR : Unknown command!"
+    echo ""
+    echo "Try -h for help"
+    exit 1
+    ;;
 esac
 
 # checkout dev and pull
