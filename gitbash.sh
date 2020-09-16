@@ -36,6 +36,13 @@ shift $((OPTIND - 1))
 
 subcommand=$1
 shift # Remove 'next' from the argument list
+
+if [ "$subcommand" = "" ]; then
+    echo "ERROR : Command is required!"
+    echo ""
+    echo "Try [-h] for help"
+    exit 1
+fi
 case "$subcommand" in
 # Parse options to the next sub command
 next)
