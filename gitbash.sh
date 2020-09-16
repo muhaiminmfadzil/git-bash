@@ -40,7 +40,7 @@ shift # Remove 'next' from the argument list
 if [ "$subcommand" = "" ]; then
     echo "ERROR : Command is required!"
     echo ""
-    echo "Try [-h] for help"
+    echo "Try -h for help"
     exit 1
 fi
 case "$subcommand" in
