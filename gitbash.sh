@@ -8,8 +8,13 @@ REMOTENAME="origin"
 CURRENTBRANCH=$(git branch --show-current 2>&1)
 
 usage() {
-    echo "Help function"
-    return 1
+    echo "General :"
+    echo "  [-h] : help"
+    echo ""
+    echo "Command :"
+    echo "  next BRANCHNAME [-n] [-r]"
+    echo "      [-n] : create new branch only (not deleting current branch)"
+    echo "      [-r] : change git remote name (default : origin)"
 }
 
 while getopts ":h" opt; do
@@ -19,6 +24,9 @@ while getopts ":h" opt; do
         exit 0
         ;;
     \?) # invalid options
+        echo "ERROR : Invalid argument"
+        echo "------------------------"
+        echo ""
         usage
         exit 1
         ;;
@@ -84,7 +92,6 @@ createnewbranchsetupstream() {
 
 # checkout to dev and delete current branch only
 runcheckoutdelete() {
-    echo "run check out delete"
     devrun &&
         deletecurrentbranch
     echo -e "\nDone!"
@@ -93,7 +100,6 @@ runcheckoutdelete() {
 
 # checkout to dev and create new branch only
 runnewbranchonly() {
-    echo "run new branch only"
     devrun &&
         createnewbranchsetupstream
     echo -e "\nDone!"
@@ -102,7 +108,6 @@ runnewbranchonly() {
 
 # checkout to dev, pull, delete current branch, create new branch and set upstream
 runall() {
-    echo "run all"
     devrun &&
         if [ "$CURRENTBRANCH" = "dev" ]; then
             createnewbranchsetupstream
@@ -113,10 +118,6 @@ runall() {
     echo -e "\nDone!"
     return 0
 }
-
-echo $NEWBRANCHNAME
-echo $NEWBRANCHONLY
-echo $REMOTENAME
 
 if [ "$NEWBRANCHNAME" = "" ]; then
     echo "ERROR : Branch name is required!"
