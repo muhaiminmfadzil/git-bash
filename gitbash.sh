@@ -24,8 +24,8 @@ pushcheckoutdelete() {
         git checkout dev &&
         echo -e "\n--Pull dev\n" &&
         git pull &&
-        deletecurrentbranch &&
-        echo -e "\nDone!"
+        deletecurrentbranch
+    echo -e "\nDone!"
     return 1
 }
 
@@ -38,8 +38,8 @@ pushnewbranchonly() {
         echo -e "\n--Create new branch named $NEWBRANCHONLYNAME\n" &&
         git checkout -b $NEWBRANCHONLYNAME &&
         echo -e "\n--Push & upstream new branch $NEWBRANCHONLYNAME to Github $REMOTENAME\n" &&
-        git push -u origin $NEWBRANCHONLYNAME &&
-        echo -e "\nDone!"
+        git push -u origin $NEWBRANCHONLYNAME
+    echo -e "\nDone!"
     return 1
 }
 
