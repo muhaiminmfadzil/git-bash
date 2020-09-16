@@ -118,6 +118,11 @@ echo $NEWBRANCHNAME
 echo $NEWBRANCHONLY
 echo $REMOTENAME
 
+if [ "$NEWBRANCHNAME" = "" ]; then
+    echo "ERROR : Branch name is required!"
+    exit 1
+fi
+
 # run
 if [ "$NEWBRANCHNAME" = "$CURRENTBRANCH" ]; then
     echo "You already on $NEWBRANCHNAME branch"
