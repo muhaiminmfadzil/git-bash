@@ -43,8 +43,21 @@ pushnewbranchonly() {
     return 1
 }
 
-pushandnewbranch() {
-    echo "this is push new branch"
+# push, checkout to dev, pull, delete current branch, create new branch and set upstream
+all() {
+    echo -e "\n--Push current branch\n" &&
+        git push &&
+        echo -e "\n--Checkout dev\n" &&
+        git checkout dev &&
+        echo -e "\n--Pull dev\n" &&
+        git pull &&
+        echo -e "\n--Delete branch $CURRENTBRANCH\n" &&
+        git branch -D $CURRENTBRANCH &&
+        echo -e "\n--Create new branch named $NEWBRANCHNAME\n" &&
+        git checkout -b $NEWBRANCHNAME &&
+        echo -e "\n--Push & upstream new branch $NEWBRANCHNAME to Github $REMOTENAME\n" &&
+        git push -u origin $NEWBRANCHNAME &&
+        echo -e "\nDone!"
     return 1
 }
 
@@ -56,5 +69,5 @@ elif [ "$NEWBRANCHNAME" = "dev" ] || [ "$NEWBRANCHNAME" = "" ]; then
 elif [ "$NEWBRANCHNAME" = "-newonly" ]; then
     pushnewbranchonly
 else
-    pushandnewbranch
+    all
 fi
