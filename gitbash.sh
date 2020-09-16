@@ -10,7 +10,7 @@ echo $CURRENTBRANCH
 
 pushandcheckout() {
     echo "this is push checkout"
-    git push && git checkout dev && git branch -D $CURRENTBRANCH
+    git push && git checkout dev && aaa && git branch -D $CURRENTBRANCH
     return 1
 }
 
